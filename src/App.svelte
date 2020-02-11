@@ -1,10 +1,22 @@
 <script>
 	export let name;
+
+
+	const worker = new Worker('/web-worker/worker.js');
+	worker.addEventListener('message', function(e) {
+		console.log('Worker said: ', e.data);
+	}, false);
+
+	function sendDataToWorker() {
+		worker.postMessage('Hello World'); // Send data to our worker.
+	}
+
 </script>
 
 <main>
 	<h1>Hello {name}!</h1>
 	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<button on:click|preventDefault={sendDataToWorker}>Send mesage</button>
 </main>
 
 <style>
