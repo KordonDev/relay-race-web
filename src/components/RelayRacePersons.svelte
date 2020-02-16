@@ -2,6 +2,7 @@
     export let persons;
     export let addPerson;
     export let addDistance;
+    import SnapVertical from './atoms/SnapVertical.svelte';
 </script>
 
 <style>
@@ -17,29 +18,31 @@
 
 </style>
 
-<div class="relay-race-input">
-    <div>
-        Personen:
-        <ul>
-            {#each persons as person}
-                <li>{person.name}</li>
-            {/each}
-        </ul>
+<SnapVertical>
+    <div class="relay-race-input">
+        <div>
+            Personen:
+            <ul>
+                {#each persons as person}
+                    <li>{person.name}</li>
+                {/each}
+            </ul>
 
-        <button on:click|preventDefault={addPerson}>
-            Person hinzufügen
-        </button>
-    </div>
+            <button on:click|preventDefault={addPerson}>
+                Person hinzufügen
+            </button>
+        </div>
 
-    <div>
-        Distanzen:
-        <ul>
-            {#each persons[0].runs as run}
-                <li>{run.distance}</li>
-            {/each}
-        </ul>
-        <button on:click|preventDefault={addDistance}>
-            Distanz hinzufügen
-        </button>
+        <div>
+            Distanzen:
+            <ul>
+                {#each persons[0].runs as run}
+                    <li>{run.distance}</li>
+                {/each}
+            </ul>
+            <button on:click|preventDefault={addDistance}>
+                Distanz hinzufügen
+            </button>
+        </div>
     </div>
-</div>
+</SnapVertical>

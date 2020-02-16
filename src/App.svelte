@@ -1,6 +1,14 @@
 <script>
 	import PersonColumn from './components/PersonColumn.svelte';
-	import RelayRacePerson from './components/RelayRacePersons.svelte';
+	import RelayRacePersons from './components/RelayRacePersons.svelte';
+	import RelayRaceResult from './components/RelayRaceResult.svelte';
+
+
+    import SnapVertical from './components/atoms/SnapVertical.svelte';
+	import SnapHorizontal from './components/atoms/SnapHorizontal.svelte';
+	import SnapVerticalContainer from './components/atoms/SnapVerticalContainer.svelte';
+
+
 	export let persons = [{
 		name: 'Person A',
 		runs: [{
@@ -68,52 +76,35 @@
 		})
 	}
 
-	const worker = new Worker('/web-worker/worker.js');
-	worker.addEventListener('message', function(e) {
-		console.log('Worker said: ', e.data);
-	}, false);
-
-	function sendDataToWorker() {
-		worker.postMessage('Hello World'); // Send data to our worker.
-	}
 </script>
 
 <main>
-	<button on:click|preventDefault={sendDataToWorker}>Send mesages</button>
+	<SnapVerticalContainer paddingInPx="0">
+		<RelayRacePersons
+			persons={persons}
+			addPerson={addPerson}
+			addDistance={addDistance}
+		/>
 
-	<RelayRacePerson
-		persons={persons}
-		addPerson={addPerson}
-		addDistance={addDistance}
-	/>
+		<SnapVertical>
+			<SnapHorizontal>
+				{#each persons as person}
+					<div class="person">
+						<PersonColumn person={person} />
+					</div>
+				{/each}
+			</SnapHorizontal>
+		</SnapVertical>
 
-	<div class="inputContainer">
-		{#each persons as person}
-			<div class="person">
-				<PersonColumn person={person} />
-			</div>
-		{/each}
+		<RelayRaceResult persons={persons} />
 
-	</div>
+
+	</SnapVerticalContainer>
 </main>
 
 <style>
-	.inputContainer {
-		scroll-snap-type: x mandatory;
-		display: flex;
-		overflow-x: scroll;
-	}
-
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
+	:global(body) {
+		margin: 0;
+		padding: 0;
 	}
 </style>
