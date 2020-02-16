@@ -12,62 +12,62 @@
 	export let persons = [{
 		name: 'Person A',
 		runs: [{
-			distance: '50m', time: 0,
+			distance: 50, time: 0,
 		},{
-			distance: '100m', time: 0,
+			distance: 100, time: 0,
 		}, {
-			distance: '150m', time: 0,
+			distance: 150, time: 0,
 		}, {
-			distance: '200m', time: 0,
+			distance: 200, time: 0,
 		}]
 	}, {
 		name: 'Person B',
 		runs: [{
-			distance: '50m', time: 0,
+			distance: 50, time: 0,
 		},{
-			distance: '100m', time: 0,
+			distance: 100, time: 0,
 		}, {
-			distance: '150m', time: 0,
+			distance: 150, time: 0,
 		}, {
-			distance: '200m', time: 0,
+			distance: 200, time: 0,
 		}]
 	}, {
 		name: 'Person C',
 		runs: [{
-			distance: '50m', time: 0,
+			distance: 50, time: 0,
 		},{
-			distance: '100m', time: 0,
+			distance: 100, time: 0,
 		}, {
-			distance: '150m', time: 0,
+			distance: 150, time: 0,
 		}, {
-			distance: '200m', time: 0,
+			distance: 200, time: 0,
 		}]
 	}, {
 		name: 'Person D',
 		runs: [{
-			distance: '50m', time: 0,
+			distance: 50, time: 0,
 		},{
-			distance: '100m', time: 0,
+			distance: 100, time: 0,
 		}, {
-			distance: '150m', time: 0,
+			distance: 150, time: 0,
 		}, {
-			distance: '200m', time: 0,
+			distance: 200, time: 0,
 		}]
 	}];
 
-	function addPerson() {
+	function addPerson(name) {
 		const newPerson = {
-			name: 'Person E',
+			name,
 			runs: persons[0].runs.map(run => ({ distance: run.distance, time: 0})),
 		}
 		const allPersons = persons.push(newPerson);
 		persons = [ ...persons ];
 	}
 
-	function addDistance() {
+	function addDistance(distance) {
 		persons = persons.map(person => {
 			const allRuns = [ ...person.runs ];
-			allRuns.push({ distance: '300m', time: 0 });
+			allRuns.push({ distance, time: 0 });
 
 			return {
 				name: person.name,
