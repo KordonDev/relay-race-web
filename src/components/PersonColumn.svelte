@@ -15,10 +15,14 @@
 
 <div class="person-column">
     <h3>{person.name}</h3>
+
+    <h5>Laufzeiten</h5>
     <ul>
         {#each person.runs as run}
             <li>
-                {run.distance} run in {run.time}
+                <label for={person.name + run.distance}>{run.distance}m:</label>
+                <input style="display: inline" id={person.name + run.distance} bind:value={run.time} type="number" placeholder="in Sekunden">
+                {run.time ? run.time : ''}
             </li>
         {/each}
     </ul>

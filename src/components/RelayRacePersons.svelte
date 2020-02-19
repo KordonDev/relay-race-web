@@ -2,6 +2,8 @@
     export let persons;
     export let addPerson;
     export let addDistance;
+    export let totalDistance;
+    export let setTotalDistance;
     import SnapVertical from './atoms/SnapVertical.svelte';
 
     let newPersonName;
@@ -47,6 +49,11 @@
                     Person hinzufügen
                 </button>
             </form>
+        </div>
+
+        <div>
+            <label for="totalDistance">Gesamtdistanz in Meter:</label>
+            <input id="totalDistance" type="number" bind:value={totalDistance} placeholder="in Meter">
         </div>
 
         <div>

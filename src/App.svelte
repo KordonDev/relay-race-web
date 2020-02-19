@@ -12,53 +12,58 @@
 	export let persons = [{
 		name: 'Person A',
 		runs: [{
-			distance: 50, time: 0,
+			distance: 50, time: undefined,
 		},{
-			distance: 100, time: 0,
+			distance: 100, time: undefined,
 		}, {
-			distance: 150, time: 0,
+			distance: 150, time: undefined,
 		}, {
-			distance: 200, time: 0,
+			distance: 200, time: undefined,
 		}]
 	}, {
 		name: 'Person B',
 		runs: [{
-			distance: 50, time: 0,
+			distance: 50, time: undefined,
 		},{
-			distance: 100, time: 0,
+			distance: 100, time: undefined,
 		}, {
-			distance: 150, time: 0,
+			distance: 150, time: undefined,
 		}, {
-			distance: 200, time: 0,
+			distance: 200, time: undefined,
 		}]
 	}, {
 		name: 'Person C',
 		runs: [{
-			distance: 50, time: 0,
+			distance: 50, time: undefined,
 		},{
-			distance: 100, time: 0,
+			distance: 100, time: undefined,
 		}, {
-			distance: 150, time: 0,
+			distance: 150, time: undefined,
 		}, {
-			distance: 200, time: 0,
+			distance: 200, time: undefined,
 		}]
 	}, {
 		name: 'Person D',
 		runs: [{
-			distance: 50, time: 0,
+			distance: 50, time: undefined,
 		},{
-			distance: 100, time: 0,
+			distance: 100, time: undefined,
 		}, {
-			distance: 150, time: 0,
+			distance: 150, time: undefined,
 		}, {
-			distance: 200, time: 0,
+			distance: 200, time: undefined,
 		}]
 	}];
+	export let totalDistance;
+
+	function setTotalDistance(_totalDistance) {
+		totalDistance = _totalDistance;
+	}
 
 	function addPerson(name) {
 		const newPerson = {
 			name,
-			runs: persons[0].runs.map(run => ({ distance: run.distance, time: 0})),
+			runs: persons[0].runs.map(run => ({ distance: run.distance, time: undefined})),
 		}
 		const allPersons = persons.push(newPerson);
 		persons = [ ...persons ];
@@ -67,7 +72,7 @@
 	function addDistance(distance) {
 		persons = persons.map(person => {
 			const allRuns = [ ...person.runs ];
-			allRuns.push({ distance, time: 0 });
+			allRuns.push({ distance, time: undefined });
 
 			return {
 				name: person.name,
@@ -84,6 +89,8 @@
 			persons={persons}
 			addPerson={addPerson}
 			addDistance={addDistance}
+			totalDistance={totalDistance}
+			setTotalDistance={setTotalDistance}
 		/>
 
 		<SnapVertical>
