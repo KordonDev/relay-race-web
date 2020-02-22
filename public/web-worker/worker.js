@@ -1,3 +1,4 @@
+/*
 const subworker = new Worker('/web-worker/sub-worker.js');
 
 subworker.addEventListener('message', function(e) {
@@ -6,29 +7,37 @@ subworker.addEventListener('message', function(e) {
 }, false);
 
 self.addEventListener('message', function(e) {
-    subworker.postMessage('Hello World'); // Send data to our worker.
+    subworker.postMessage(e.data); // Send data to our worker.
 }, false);
+*/
+
+self.addEventListener('message', function(e) {
+    const data = e.data;
+    const relayRace = calculateRelayRaces(data.persons, 0, [], data.totalDistance, undefined);
+    self.postMessage(relayRace);
+}, false)
 
 const calculateRelayRaces = (persons, personPosition, currentRuns, targetDistance, fastestRelayRace) => {
-
     // Abbruchbedingung
-    if (persons.length  >= personPosition) {
+    if (persons.length  <= personPosition) {
         const completeRelayRace = currentRuns.reduce((prev, current) => {
             return {
+                ...prev,
                 distance: prev.distance + current.distance,
-                duration: prev.duration + current.duration,
+                time: prev.time + current.time,
             };
-        }, { distance: 0, duration: 0 });
-        if (completeRelayRace.distance === targetDistance && completeRelayRace.duration < fastestRelayRace.duration) {
+        }, { distance: 0, time: 0, runs: currentRuns.map(run => ({ ...run })) });
+
+        if (completeRelayRace.distance === targetDistance && (fastestRelayRace === undefined || completeRelayRace.time < fastestRelayRace.time)) {
             return completeRelayRace;
         }
-        return completeRelayRace;
+        return fastestRelayRace;
     }
 
     // Recursion step
     let _fastestRelayRace = fastestRelayRace;
     const person = persons[personPosition];
-    for (run in person.run) {
+    for (run of person.runs) {
         currentRuns.push(run);
         _fastestRelayRace = calculateRelayRaces(persons, personPosition +1, currentRuns, targetDistance, _fastestRelayRace);
         currentRuns.pop();
@@ -39,7 +48,7 @@ const calculateRelayRaces = (persons, personPosition, currentRuns, targetDistanc
 /*
 interface Run {
     distance: number;
-    duration: number;
+    time: number;
     name: String;
 }
 
@@ -49,7 +58,7 @@ interface Person {
 
 interface RelayRace {
     distance: number;
-    duration: number;
+    time: number;
     runs: Runs[]
 }
 */

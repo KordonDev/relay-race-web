@@ -1,13 +1,31 @@
 <script>
-    import SnapVertical from './atoms/SnapVertical.svelte';
+	import SnapVertical from './atoms/SnapVertical.svelte';
+	import { store } from '../services/stores';
 
+	let data;
+	let perfectRelayRace = {};
+	$: timeInMinutes = perfectRelayRace.time > 60 ? `${Math.floor(perfectRelayRace.time / 60)}:${perfectRelayRace.time % 60}` : `${perfectRelayRace.time}`
+
+    store.subscribe(value => data = value);
 	const worker = new Worker('/web-worker/worker.js');
+
+
 	worker.addEventListener('message', function(e) {
-		console.log('Worker said: ', e.data);
+		perfectRelayRace = e.data;
 	}, false);
 
 	function sendDataToWorker() {
-		worker.postMessage(persons); // Send data to our worker.
+		const dataForServiceWorker = {
+			totalDistance: data.totalDistance,
+			persons: data.persons.map(person => ({
+				...person,
+				runs: person.runs.map(run => ({
+					...run,
+					name: person.name,
+				})),
+			})),
+		};
+		worker.postMessage(dataForServiceWorker); // Send data to our worker.
 	}
 </script>
 
@@ -24,6 +42,23 @@
 
 <SnapVertical>
     <div class="relay-race-result">
-        <button on:click|preventDefault={sendDataToWorker}>Send mesages</button>
+        <button on:click|preventDefault={sendDataToWorker}>Schnellster Staffellauf berechnen</button>
+		{#if perfectRelayRace.time}
+			<div>
+				<h3>
+					Bestes Ergebnis
+				</h3>
+				<p>
+					Möglich sind die {perfectRelayRace.distance} Meter in {perfectRelayRace.time} Sekunden ({timeInMinutes}).
+				</p>
+
+				Dafür ist die folgende Verteilung nötig:
+				<ul>
+					{#each perfectRelayRace.runs as run}
+						<li>{run.name} läuft {run.distance}m in {run.time}s</li>
+					{/each}
+				</ul>
+			</div>
+		{/if}
     </div>
 </SnapVertical>
