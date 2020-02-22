@@ -1,7 +1,7 @@
 <script>
-	import PersonColumn from './components/PersonColumn.svelte';
-	import RelayRacePersons from './components/RelayRacePersons.svelte';
-	import RelayRaceResult from './components/RelayRaceResult.svelte';
+	import PersonRunTimes from './components/PersonRunTimes.svelte';
+	import PrepareRelayRace from './components/PrepareRelayRace.svelte';
+	import ResultRelayRace from './components/ResultRelayRace.svelte';
 
 
     import SnapVertical from './components/atoms/SnapVertical.svelte';
@@ -17,19 +17,19 @@
 
 <main>
 	<SnapVerticalContainer paddingInPx="0">
-		<RelayRacePersons />
+		<PrepareRelayRace />
 
 		<SnapVertical>
 			<SnapHorizontal>
 				{#each persons as person}
 					<div class="person">
-						<PersonColumn person={person} />
+						<PersonRunTimes person={person} />
 					</div>
 				{/each}
 			</SnapHorizontal>
 		</SnapVertical>
 
-		<RelayRaceResult />
+		<ResultRelayRace />
 	</SnapVerticalContainer>
 </main>
 

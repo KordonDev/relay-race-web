@@ -68,3 +68,20 @@ export const updateRunTime = (personName, distance, time) => {
         }
     })
 }
+
+export const removePerson = (personName) => {
+    store.update(state => ({
+        ...state,
+        persons: state.persons.filter(person => person.name !== personName),
+    }));
+}
+
+export const removeRun = (distance) => {
+    store.update(state => ({
+        ...state,
+        persons: state.persons.map(person => ({
+            ...person,
+            runs: person.runs.filter(run => run.distance !== distance),
+        }))
+    }));
+}

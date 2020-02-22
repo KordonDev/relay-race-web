@@ -1,6 +1,6 @@
 <script>
     import SnapVertical from './atoms/SnapVertical.svelte';
-    import { store, addPerson, addDistance, setTotalDistance } from '../services/stores';
+    import { store, addPerson, addDistance, setTotalDistance, removeRun, removePerson } from '../services/stores';
 
     let newPersonName;
     let newDistance;
@@ -20,6 +20,12 @@
     }
     function submitTotalDistance() {
         setTotalDistance(totalDistance);
+    }
+    function _removePerson(person) {
+        return () => removePerson(person.name);
+    }
+    function _removeRun(run) {
+        return () => removeRun(run.distance);
     }
 </script>
 
@@ -42,7 +48,7 @@
             Personen:
             <ul>
                 {#each persons as person}
-                    <li>{person.name}</li>
+                    <li>{person.name} <button on:click|preventDefault={_removePerson(person)}>x</button></li>
                 {/each}
             </ul>
 
@@ -69,7 +75,7 @@
             Distanzen:
             <ul>
                 {#each persons[0].runs as run}
-                    <li>{run.distance}</li>
+                    <li>{run.distance} <button on:click|preventDefault={_removeRun(run)}>x</button></li>
                 {/each}
             </ul>
 
