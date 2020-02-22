@@ -1,6 +1,4 @@
 <script>
-    export let persons;
-
     import SnapVertical from './atoms/SnapVertical.svelte';
 
 	const worker = new Worker('/web-worker/worker.js');

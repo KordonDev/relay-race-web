@@ -1,21 +1,25 @@
 <script>
-    export let persons;
-    export let addPerson;
-    export let addDistance;
-    export let totalDistance;
-    export let setTotalDistance;
     import SnapVertical from './atoms/SnapVertical.svelte';
+    import { store, addPerson, addDistance, setTotalDistance } from '../services/stores';
 
     let newPersonName;
     let newDistance;
+    let persons;
+    let totalDistance;
+
+    store.subscribe(value => persons = value.persons);
+    store.subscribe(value => totalDistance = value.totalDistance);
 
     function addNewPerson() {
         addPerson(newPersonName);
-        newPersonName = '';
+        newPersonName = undefined;
     }
     function addNewDistance() {
         addDistance(newDistance);
-        newDistance = 0;
+        newDistance = undefined;
+    }
+    function submitTotalDistance() {
+        setTotalDistance(totalDistance);
     }
 </script>
 
@@ -42,18 +46,23 @@
                 {/each}
             </ul>
 
-            <form on:submit|preventDefault={addNewDistance}>
+            <form on:submit|preventDefault={addNewPerson}>
                 <label for="name">Name:</label>
                 <input id="name" bind:value={newPersonName} placeholder="enter your name">
-                <button on:click|preventDefault={addNewPerson}>
+                <button type="submit">
                     Person hinzufügen
                 </button>
             </form>
         </div>
 
         <div>
-            <label for="totalDistance">Gesamtdistanz in Meter:</label>
-            <input id="totalDistance" type="number" bind:value={totalDistance} placeholder="in Meter">
+            <form on:submit|preventDefault={submitTotalDistance}>
+                <label for="totalDistance">Gesamtdistanz in Meter:</label>
+                <input id="totalDistance" type="number" bind:value={totalDistance} placeholder="in Meter">
+                <button type="submit">
+                    Gesamtdistanz setzen
+                </button>
+            </form>
         </div>
 
         <div>
