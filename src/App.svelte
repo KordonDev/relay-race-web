@@ -30,8 +30,6 @@
 		</SnapVertical>
 
 		<RelayRaceResult />
-
-
 	</SnapVerticalContainer>
 </main>
 

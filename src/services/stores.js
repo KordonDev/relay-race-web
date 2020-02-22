@@ -1,54 +1,8 @@
 import { writable } from "svelte/store";
+import { smallStore } from './data/smallStore';
 
-export const store = writable(JSON.parse(localStorage.getItem('store')) || {
-// export const store = writable({
-    totalDistance: 150,
-    persons: [{
-        name: 'Person A',
-        runs: [{
-            distance: 50, time: undefined,
-        },{
-            distance: 100, time: undefined,
-        }, {
-            distance: 150, time: undefined,
-        }, {
-            distance: 200, time: undefined,
-        }]
-    }, {
-        name: 'Person B',
-        runs: [{
-            distance: 50, time: undefined,
-        },{
-            distance: 100, time: undefined,
-        }, {
-            distance: 150, time: undefined,
-        }, {
-            distance: 200, time: undefined,
-        }]
-    }, {
-        name: 'Person C',
-        runs: [{
-            distance: 50, time: undefined,
-        },{
-            distance: 100, time: undefined,
-        }, {
-            distance: 150, time: undefined,
-        }, {
-            distance: 200, time: undefined,
-        }]
-    }, {
-        name: 'Person D',
-        runs: [{
-            distance: 50, time: undefined,
-        },{
-            distance: 100, time: undefined,
-        }, {
-            distance: 150, time: undefined,
-        }, {
-            distance: 200, time: undefined,
-        }]
-    }]
-});
+// export const store = writable(JSON.parse(localStorage.getItem('store'))
+export const store = writable(smallStore);
 store.subscribe(val => localStorage.setItem("store", JSON.stringify(val)));
 
 export const setTotalDistance = (_totalDistance) => {
