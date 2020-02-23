@@ -1,9 +1,11 @@
 import { writable } from "svelte/store";
 import { smallStore } from './data/smallStore';
+import { validateAddPersonRunTime, setStoreToValidators } from "./validators";
 
 // export const store = writable(JSON.parse(localStorage.getItem('store'))
 export const store = writable(smallStore);
 store.subscribe(val => localStorage.setItem("store", JSON.stringify(val)));
+setStoreToValidators(store);
 
 export const setTotalDistance = (_totalDistance) => {
     store.update(state => {
@@ -45,6 +47,9 @@ export const addDistance = (distance) => {
 }
 
 export const updateRunTime = (personName, distance, time) => {
+    if (!validateAddPersonRunTime(time)) {
+        return;
+    }
     store.update(state => {
         return {
             ...state,

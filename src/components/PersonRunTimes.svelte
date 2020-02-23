@@ -1,11 +1,7 @@
 <script>
     export let person;
 
-    import { updateRunTime } from '../services/stores';
-
-    function setTime(run) {
-        return () => updateRunTime(person.name, run.distance, run.time)
-    }
+    import RunTime from './RunTime.svelte';
 </script>
 
 <div class="person-column">
@@ -14,10 +10,7 @@
     <h5>Laufzeiten</h5>
     <ul>
         {#each person.runs as run}
-            <li>
-                <label for={person.name + run.distance}>{run.distance}m:</label>
-                <input style="display: inline" id={person.name + run.distance} bind:value={run.time} on:input={setTime(run)} type="number" placeholder="in Sekunden">
-            </li>
+            <RunTime personName={person.name} runDistance={run.distance} runTime={run.time} />
         {/each}
     </ul>
 </div>
