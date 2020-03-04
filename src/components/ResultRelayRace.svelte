@@ -1,7 +1,7 @@
 <script>
 	import SnapVertical from './atoms/SnapVertical.svelte';
 	import { store } from '../services/stores';
-	import { runTimeErrors } from '../services/validators';
+	import { runTimeErrors, totalDistanceError } from '../services/validators';
 
 	let data;
 	let errors;
@@ -9,7 +9,8 @@
 	$: timeInMinutes = perfectRelayRace.time > 60 ? `${Math.floor(perfectRelayRace.time / 60)}:${perfectRelayRace.time % 60}` : `${perfectRelayRace.time}`
 
     store.subscribe(value => {
-		errors = runTimeErrors(value);
+		errors = runTimeErrors(value).concat(totalDistanceError(value));
+		console.log(errors);
 		data = value;
 	});
 	const worker = new Worker('/web-worker/worker.js');
@@ -47,9 +48,11 @@
 
 <SnapVertical>
     <div class="relay-race-result">
-		<p>
-			{errors.map(error => `${error.name} ${error.distance}`)}
-		</p>
+		<ul>
+			{#each errors as error}
+				<li>{error}</li>
+			{/each}
+		</ul>
         <button on:click|preventDefault={sendDataToWorker} disabled='{errors.length}'>Schnellster Staffellauf berechnen</button>
 		{#if perfectRelayRace.time}
 			<div>

@@ -47,9 +47,6 @@ export const addDistance = (distance) => {
 }
 
 export const updateRunTime = (personName, distance, time) => {
-    if (!validateAddPersonRunTime(time)) {
-        return;
-    }
     store.update(state => {
         return {
             ...state,

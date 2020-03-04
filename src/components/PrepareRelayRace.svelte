@@ -1,7 +1,7 @@
 <script>
     import SnapVertical from './atoms/SnapVertical.svelte';
     import { store, addPerson, addDistance, setTotalDistance, removeRun, removePerson } from '../services/stores';
-    import { validateAddRun, validateAddPerson, validateSetTotalDistance } from '../services/validators';
+    import { validateAddRun, validateAddPerson } from '../services/validators';
 
     let newPersonName;
     let newDistance;
@@ -34,9 +34,6 @@
     function isDisabledAddPerson(personName) {
         return !validateAddPerson(personName);
     }
-    function isDisabledSetTotalDistance(totalDistance) {
-        return !validateSetTotalDistance(totalDistance)
-    }
 </script>
 
 <style>
@@ -49,6 +46,9 @@
 		scroll-snap-stop: always;
 	}
 
+    #totalDistance:invalid {
+        border: solid red 3px;
+    }
 
 </style>
 
@@ -74,10 +74,7 @@
         <div>
             <form on:submit|preventDefault={submitTotalDistance}>
                 <label for="totalDistance">Gesamtdistanz in Meter:</label>
-                <input id="totalDistance" type="number" bind:value={totalDistance} placeholder="in Meter">
-                <button type="submit" disabled='{isDisabledSetTotalDistance(totalDistance)}'>
-                    Gesamtdistanz setzen
-                </button>
+                <input id="totalDistance" type="number" bind:value={totalDistance} on:input={submitTotalDistance} min=0 placeholder="in Meter">
             </form>
         </div>
 

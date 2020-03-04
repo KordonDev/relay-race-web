@@ -20,12 +20,6 @@ export const validateAddPerson = (personName) => {
     return state.persons.every(person => person.name !== personName);
 }
 
-export const validateSetTotalDistance = (totalDistance) => {
-    if (!state || !totalDistance) {
-        return false;
-    }
-    return totalDistance > 0;
-}
 
 export const validateAddPersonRunTime = (runTime) => {
     if (!state) {
@@ -37,6 +31,18 @@ export const validateAddPersonRunTime = (runTime) => {
     return runTime > 0;
 }
 
+export const totalDistanceError = (_state) => {
+    const totalDistance = _state.totalDistance;
+    if (!state || !totalDistance) {
+        return [ 'No total distance' ];
+    }
+    console.log(totalDistance);
+    if (totalDistance > 0) {
+        return [];
+    }
+    return [ 'Total distance needs to be more than zero meter' ];
+}
+
 export const runTimeErrors = (_state) => {
     const errors = [];
     if (!_state) {
@@ -45,7 +51,7 @@ export const runTimeErrors = (_state) => {
     _state.persons.map(person => {
         person.runs.map(run => {
             if (!run.time || run.time <= 0) {
-                errors.push({ name: person.name, distance: run.distance });
+                errors.push(`Person ${person.name} has no valid time for distance ${run.distance} meter.`);
             }
         })
     });
