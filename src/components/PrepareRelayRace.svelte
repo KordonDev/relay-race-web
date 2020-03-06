@@ -1,6 +1,7 @@
 <script>
     import SnapVertical from './atoms/SnapVertical.svelte';
     import { store, addPerson, addDistance, setTotalDistance, removeRun, removePerson } from '../services/stores';
+    import { validateAddRun, validateAddPerson } from '../services/validators';
 
     let newPersonName;
     let newDistance;
@@ -27,6 +28,12 @@
     function _removeRun(run) {
         return () => removeRun(run.distance);
     }
+    function isDisabledAddRunDistance(distance) {
+        return !validateAddRun(distance);
+    }
+    function isDisabledAddPerson(personName) {
+        return !validateAddPerson(personName);
+    }
 </script>
 
 <style>
@@ -39,6 +46,9 @@
 		scroll-snap-stop: always;
 	}
 
+    #totalDistance:invalid {
+        border: solid red 3px;
+    }
 
 </style>
 
@@ -55,7 +65,7 @@
             <form on:submit|preventDefault={addNewPerson}>
                 <label for="name">Name:</label>
                 <input id="name" bind:value={newPersonName} placeholder="enter your name">
-                <button type="submit">
+                <button type="submit" disabled='{isDisabledAddPerson(newPersonName)}'>
                     Person hinzufügen
                 </button>
             </form>
@@ -64,10 +74,7 @@
         <div>
             <form on:submit|preventDefault={submitTotalDistance}>
                 <label for="totalDistance">Gesamtdistanz in Meter:</label>
-                <input id="totalDistance" type="number" bind:value={totalDistance} placeholder="in Meter">
-                <button type="submit">
-                    Gesamtdistanz setzen
-                </button>
+                <input id="totalDistance" type="number" bind:value={totalDistance} on:input={submitTotalDistance} min=0 placeholder="in Meter">
             </form>
         </div>
 
@@ -82,7 +89,7 @@
             <form on:submit|preventDefault={addNewDistance}>
                 <label for="distance">Distanz in Meter:</label>
                 <input id="distance" type="number" bind:value={newDistance} placeholder="in Meter">
-                <button type="submit">
+                <button type="submit" disabled='{isDisabledAddRunDistance(newDistance)}'>
                     Distanz hinzufügen
                 </button>
             </form>
