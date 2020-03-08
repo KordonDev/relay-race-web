@@ -10,6 +10,7 @@
         min-height: 100vh;
 		scroll-snap-align: start;
 		scroll-snap-stop: always;
+		padding: 20px;
 	}
 </style>
 

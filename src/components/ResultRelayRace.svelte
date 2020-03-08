@@ -36,7 +36,7 @@
 <style>
 </style>
 
-<div class="relay-race-result">
+<div id="relay-race-result">
 	<ul>
 		{#each errors as error}
 			<li>{error}</li>

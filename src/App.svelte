@@ -28,13 +28,15 @@
 		</SnapVertical>
 
 		<SnapVertical>
-			<SnapHorizontalContainer>
-				{#each persons as person}
-					<SnapHorizontal width="50vw">
-						<PersonRunTimes person={person} />
-					</SnapHorizontal>
-				{/each}
-			</SnapHorizontalContainer>
+			<div id="relay-race-times">
+				<SnapHorizontalContainer>
+					{#each persons as person}
+						<SnapHorizontal width="50vw">
+							<PersonRunTimes person={person} />
+						</SnapHorizontal>
+					{/each}
+				</SnapHorizontalContainer>
+			</div>
 		</SnapVertical>
 
 		<SnapVertical>

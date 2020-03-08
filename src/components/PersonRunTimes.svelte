@@ -4,7 +4,7 @@
     import RunTime from './RunTime.svelte';
 </script>
 
-<div>
+<div id={person.name}>
     <h3>{person.name}</h3>
 
     <h5>Laufzeiten</h5>
