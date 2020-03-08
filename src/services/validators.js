@@ -36,7 +36,6 @@ export const totalDistanceError = (_state) => {
     if (!state || !totalDistance) {
         return [ 'No total distance' ];
     }
-    console.log(totalDistance);
     if (totalDistance > 0) {
         return [];
     }
