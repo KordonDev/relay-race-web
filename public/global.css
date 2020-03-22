@@ -63,10 +63,6 @@ button:focus, input:focus {
 	outline-color: wheat;
 }
 
-button:disabled {
-	color: #999;
-}
-
 button.icon {
 	background: transparent;
 	border-color: black;
@@ -81,6 +77,7 @@ button:not(:disabled):active {
 
 button:focus {
 	border-color: #666;
+	cursor: not-allowed;
 }
 button:disabled {
 	border-color: darkolivegreen;

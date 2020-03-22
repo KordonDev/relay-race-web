@@ -56,7 +56,7 @@
             <h3>Total Distance</h3>
             <form on:submit|preventDefault={submitTotalDistance}>
                 <label for="totalDistance">Total distance in meter:</label>
-                <input id="totalDistance" bind:value={totalDistance} on:input={submitTotalDistance} min=0 required placeholder="in Meter" autocomplete="off" />
+                <input type="number" id="totalDistance" bind:value={totalDistance} on:input={submitTotalDistance} min=1 required placeholder="in Meter" autocomplete="off" />
             </form>
         </div>
 
@@ -95,7 +95,7 @@
 
             <form on:submit|preventDefault={addNewDistance}>
                 <label for="distance">Add Distance:</label>
-                <input id="distance" bind:value={newDistance} placeholder="in Meter" min=0 autocomplete="off"/>
+                <input id="distance" type="number" bind:value={newDistance} placeholder="in Meter" min=1 autocomplete="off"/>
                 <button class="icon" type="submit" disabled='{isDisabledAddRunDistance(newDistance)}'>
                     <img style="width: 15px"src="./assets/waypoint-plus.svg" alt="Add distance">
                 </button>
