@@ -30,7 +30,7 @@ a:visited {
 }
 
 label {
-	display: block;
+	display: inline;
 }
 
 input, button, select, textarea {
@@ -54,11 +54,25 @@ input[type="range"] {
 button {
 	color: #333;
 	background-color: #f4f4f4;
-	outline: none;
+}
+
+button:hover {
+	border-color: wheat;
+}
+button:focus, input:focus {
+	outline-color: wheat;
 }
 
 button:disabled {
 	color: #999;
+}
+
+button.icon {
+	background: transparent;
+	border-color: black;
+	border-radius: 3px;
+	cursor: pointer;
+	margin-left: 10px;
 }
 
 button:not(:disabled):active {
@@ -67,6 +81,21 @@ button:not(:disabled):active {
 
 button:focus {
 	border-color: #666;
+}
+button:disabled {
+	border-color: darkolivegreen;
+}
+
+input {
+	border: none;
+	border-bottom: 2px black solid;
+	background: transparent;
+}
+input:invalid {
+	border-color: red;
+}
+::placeholder{
+	color: darkolivegreen;
 }
 
 h1, h2, h3 {

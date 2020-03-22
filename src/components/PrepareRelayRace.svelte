@@ -1,7 +1,6 @@
 <script>
     import { store, addPerson, addDistance, setTotalDistance, removeRun, removePerson } from '../services/stores';
     import { validateAddRun, validateAddPerson } from '../services/validators';
-    import IconButton from './atoms/IconButton.svelte';
 
     let newPersonName;
     let newDistance;
@@ -29,6 +28,7 @@
         return () => removeRun(run.distance);
     }
     function isDisabledAddRunDistance(distance) {
+        console.log(distance);
         return !validateAddRun(distance);
     }
     function isDisabledAddPerson(personName) {
@@ -60,7 +60,7 @@
             <h3>Total Distance</h3>
             <form on:submit|preventDefault={submitTotalDistance}>
                 <label for="totalDistance">Total distance in meter:</label>
-                <input id="totalDistance" type="number" bind:value={totalDistance} on:input={submitTotalDistance} min=0 placeholder="in Meter">
+                <input id="totalDistance" bind:value={totalDistance} on:input={submitTotalDistance} min="0" placeholder="in Meter" autocomplete="off" />
             </form>
         </div>
 
@@ -70,17 +70,17 @@
                 {#each persons as person}
                     <li>
                         {person.name}
-                        <IconButton title="Remove runner" onClick={_removePerson(person)}>
-                            <img style="width: 15px"src="./assets/flag-disqualify.svg" alt="Remove runner">
-                        </IconButton>
+                        <button class="icon" title="Remove runner" on:click={_removePerson(person)}>
+                            <img style="width: 15px"src="./assets/user-minus.svg" alt="Remove runner">
+                        </button>
                     </li>
                 {/each}
             </ul>
             <form on:submit|preventDefault={addNewPerson}>
-                <label for="name">Name:</label>
-                <input id="name" bind:value={newPersonName} placeholder="enter your name">
-                <button type="submit" disabled='{isDisabledAddPerson(newPersonName)}'>
-                    Add
+                <label for="name">Add Runner:</label>
+                <input id="name" bind:value={newPersonName} placeholder="Name" autocomplete="off" />
+                <button class="icon" type="submit" disabled='{isDisabledAddPerson(newPersonName)}'>
+                    <img style="width: 15px"src="./assets/user-plus.svg" alt="Add runner">
                 </button>
             </form>
         </div>
@@ -89,15 +89,19 @@
             <h3>Split distances</h3>
             <ul>
                 {#each persons[0].runs as run}
-                    <li>{run.distance} <button on:click|preventDefault={_removeRun(run)}>x</button></li>
+                    <li>{run.distance}
+                        <button class="icon" on:click={_removeRun(run)}>
+                            <img style="width: 15px"src="./assets/waypoint-minus.svg" alt="Remove distance">
+                        </button>
+                    </li>
                 {/each}
             </ul>
 
             <form on:submit|preventDefault={addNewDistance}>
-                <label for="distance">Distanz in Meter:</label>
-                <input id="distance" type="number" bind:value={newDistance} placeholder="in Meter">
-                <button type="submit" disabled='{isDisabledAddRunDistance(newDistance)}'>
-                    Add
+                <label for="distance">Add Distance:</label>
+                <input id="distance" bind:value={newDistance} placeholder="in Meter" min=0 autocomplete="off"/>
+                <button class="icon" type="submit" disabled='{isDisabledAddRunDistance(newDistance)}'>
+                    <img style="width: 15px"src="./assets/waypoint-plus.svg" alt="Add distance">
                 </button>
             </form>
         </div>
