@@ -47,6 +47,12 @@ export const runTimeErrors = (_state) => {
     if (!_state) {
         return errors;
     }
+    if (_state.persons.length === 0) {
+        errors.push('At least one person should run the relay race.');
+    }
+    if (_state.persons.length > 0 && _state.persons[0].runs.length === 0) {
+        errors.push('At least one split distance is needed');
+    }
     _state.persons.map(person => {
         person.runs.map(run => {
             if (!run.time || run.time <= 0) {
