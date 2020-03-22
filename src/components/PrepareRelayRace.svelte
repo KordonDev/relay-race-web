@@ -28,7 +28,6 @@
         return () => removeRun(run.distance);
     }
     function isDisabledAddRunDistance(distance) {
-        console.log(distance);
         return !validateAddRun(distance);
     }
     function isDisabledAddPerson(personName) {

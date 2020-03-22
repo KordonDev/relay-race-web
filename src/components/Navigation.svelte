@@ -127,15 +127,15 @@
 
 <div class="navigation">
     {#if top}
-        <img class="arrow top" src="./arrow.svg" alt="" />
+        <img class="arrow top" src="./assets/arrow.svg" alt="" />
     {/if}
     {#if bottom}
-        <img class="arrow bottom" src="./arrow.svg" alt="" />
+        <img class="arrow bottom" src="./assets/arrow.svg" alt="" />
     {/if}
     {#if right}
-        <img class="arrow right" src="./arrow.svg" alt="" />
+        <img class="arrow right" src="./assets/arrow.svg" alt="" />
     {/if}
     {#if left}
-        <img class="arrow left" src="./arrow.svg" alt="" />
+        <img class="arrow left" src="./assets/arrow.svg" alt="" />
     {/if}
 </div>

@@ -31,7 +31,7 @@
 			<div id="relay-race-times">
 				<SnapHorizontalContainer>
 					{#each persons as person}
-						<SnapHorizontal width="50vw">
+						<SnapHorizontal width="95vw" middleWidth="60vw" bigWidth="45vw">
 							<PersonRunTimes person={person} />
 						</SnapHorizontal>
 					{/each}

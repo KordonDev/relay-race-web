@@ -1,5 +1,8 @@
 <script>
 	export let width;
+	export let middleWidth = width;
+	export let bigWidth = middleWidth;
+
 </script>
 
 <style>
@@ -12,8 +15,18 @@
 		scroll-snap-stop: always;
 		padding: 20px;
 	}
+	@media only screen and (min-width: 768px) {
+		.snap-horizontal {
+			min-width: var(--middleWidth);
+		}
+	}
+	@media only screen and (min-width: 1200px) {
+		.snap-horizontal {
+			min-width: var(--bigWidth);
+		}
+	}
 </style>
 
-<div class="snap-horizontal" style="--width:{width}">
+<div class="snap-horizontal" style="--width:{width}; --middleWidth:{middleWidth}; --bigWidth:{bigWidth}">
     <slot />
 </div>
