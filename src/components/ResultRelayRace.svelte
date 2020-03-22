@@ -5,6 +5,7 @@
 	let data;
 	let errors;
 	let perfectRelayRace = {};
+	let calculating = false;
 	$: timeInMinutes = perfectRelayRace.time > 60 ? `${Math.floor(perfectRelayRace.time / 60)}:${perfectRelayRace.time % 60}` : `${perfectRelayRace.time}`
 
     store.subscribe(value => {
@@ -16,9 +17,11 @@
 
 	worker.addEventListener('message', function(e) {
 		perfectRelayRace = e.data;
+		calculating = false;
 	}, false);
 
 	function sendDataToWorker() {
+		calculating = true;
 		const dataForServiceWorker = {
 			totalDistance: data.totalDistance,
 			persons: data.persons.map(person => ({
@@ -45,6 +48,12 @@
 		</ul>
 	{/if}
 	<button class="result" on:click|preventDefault={sendDataToWorker} disabled='{errors.length}'>Calculate fastest relay race</button>
+	{#if calculating}
+		<div class="calculating">
+			Calculating...
+			<div class="running-woman">🏃🏼‍♀️</div>
+		</div>
+	{/if}
 	{#if perfectRelayRace.time}
 		<div>
 			<h3>
@@ -65,6 +74,36 @@
 </div>
 
 <style>
+
+.calculating {
+	position: relative;
+}
+
+.running-woman {
+	font-size: 50px;
+	animation: MoveLeftRight 3s ease-in-out infinite, Rotate 3s ease-in-out infinite;
+	position: absolute;
+	left: 0%;
+	top: 0;
+}
+
+@keyframes MoveLeftRight {
+	0%, 100% {
+		left: 0%;
+	}
+	50% {
+		left: 95%;
+	}
+}
+
+@keyframes Rotate {
+	0%, 45%, 100% {
+		transform: scaleX(-1);
+	}
+	50%, 95% {
+		transform: scaleX(1);
+	}
+}
 
 .result {
 	background-image: linear-gradient(45deg, #A0A0A0 25%, transparent 25%), linear-gradient(-45deg, #A0A0A0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #A0A0A0 75%), linear-gradient(-45deg, transparent 75%, #A0A0A0 75%);
