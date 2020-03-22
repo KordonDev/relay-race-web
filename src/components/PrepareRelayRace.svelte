@@ -37,10 +37,6 @@
 </script>
 
 <style>
-    #totalDistance:invalid {
-        border: solid red 3px;
-    }
-
 </style>
 
 <div id="relay-race-input">
@@ -60,7 +56,7 @@
             <h3>Total Distance</h3>
             <form on:submit|preventDefault={submitTotalDistance}>
                 <label for="totalDistance">Total distance in meter:</label>
-                <input id="totalDistance" bind:value={totalDistance} on:input={submitTotalDistance} min="0" placeholder="in Meter" autocomplete="off" />
+                <input id="totalDistance" bind:value={totalDistance} on:input={submitTotalDistance} min=0 required placeholder="in Meter" autocomplete="off" />
             </form>
         </div>
 

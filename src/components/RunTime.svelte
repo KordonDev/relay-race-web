@@ -16,7 +16,4 @@
 </li>
 
 <style>
-    .time-input:invalid {
-        border-color: red;
-    }
 </style>

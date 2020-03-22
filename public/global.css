@@ -91,6 +91,7 @@ input {
 	border-bottom: 2px black solid;
 	background: transparent;
 }
+
 input:invalid {
 	border-color: red;
 }

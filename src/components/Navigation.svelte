@@ -21,32 +21,32 @@
                 if (Math.abs(el.offsetTop - entry.target.offsetTop) < 20) {
                     if (entry.isIntersecting) {
                         if (index === 0) {
-                            top = 'none';
+                            top = false;
                         }
                         if (index === list.length - 1) {
-                            bottom = 'none';
+                            bottom = false;
                         }
                         const snapVerticalList = entry.target.querySelectorAll('.snap-horizontal');
                         if (snapVerticalList.length > 1) {
                             horizontalRoot = entry.target;
                             horizontalObserver = new IntersectionObserver(onHorizontalIntersection, { threshold: 0.9, root: entry.target });
                             snapVerticalList.forEach(element => horizontalObserver.observe(element));
-                            right = 'blue';
-                            left = 'blue';
+                            right = true;
+                            left = true;
                         }
                     }
                     if (!entry.isIntersecting) {
                         if (index === 0) {
-                            top = 'red';
+                            top = true;
                         }
                         if (index === list.length - 1) {
-                            bottom = 'red';
+                            bottom = true;
                         }
                         const snapVerticalList = entry.target.querySelectorAll('.snap-horizontal');
                         if (snapVerticalList.length > 1 && horizontalObserver) {
                             snapVerticalList.forEach(element => horizontalObserver.unobserve(element));
-                            right = 'none';
-                            left = 'none';
+                            right = false;
+                            left = false;
                         }
                     }
                 }
@@ -61,18 +61,18 @@
                 if (Math.abs(el.offsetLeft - entry.target.offsetLeft) < 20) {
                     if (entry.isIntersecting) {
                         if (index === 0) {
-                            left = 'none';
+                            left = false;
                         }
                         if (index === list.length - 1) {
-                            right = 'none';
+                            right = false;
                         }
                     }
                     if (!entry.isIntersecting) {
                         if (index === 0) {
-                            left = 'blue';
+                            left = true;
                         }
                         if (index === list.length -1) {
-                            right = 'blue';
+                            right = true;
                         }
                     }
                 }
@@ -96,37 +96,46 @@
         width: 20px;
         height: 20px;
         position: absolute;
+        animation: fadeIn 0.5s;
     }
     .top {
         top: -20px;
         transform: rotate(90deg);
         right: 0;
-        background-color: var(--color);
 
     }
     .bottom {
         top: 20px;
         transform: rotate(-90deg);
         right: 0;
-        background-color: var(--color);
     }
     .right {
         top: 0;
         transform: rotate(180deg);
         right: -20px;
-        background-color: var(--color);
     }
     .left {
         top: 0;
         right: 20px;
-        background-color: var(--color);
     }
 
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
 </style>
 
 <div class="navigation">
-        <img class="arrow top" src="./arrow.svg" alt="" style="--color:{top}" />
-        <img class="arrow bottom" src="./arrow.svg" alt="" style="--color:{bottom}" />
-        <img class="arrow right" src="./arrow.svg" alt="" style="--color:{right}" />
-        <img class="arrow left" src="./arrow.svg" alt="" style="--color:{left}" />
+    {#if top}
+        <img class="arrow top" src="./arrow.svg" alt="" />
+    {/if}
+    {#if bottom}
+        <img class="arrow bottom" src="./arrow.svg" alt="" />
+    {/if}
+    {#if right}
+        <img class="arrow right" src="./arrow.svg" alt="" />
+    {/if}
+    {#if left}
+        <img class="arrow left" src="./arrow.svg" alt="" />
+    {/if}
 </div>
