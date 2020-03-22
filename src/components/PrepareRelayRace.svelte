@@ -16,7 +16,7 @@
     }
     function addNewDistance() {
         addDistance(newDistance);
-        newDistance = undefined;
+        newDistance = '';
     }
     function submitTotalDistance() {
         setTotalDistance(totalDistance);
