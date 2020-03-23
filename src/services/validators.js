@@ -1,6 +1,8 @@
+import { getCurrentStore } from "./store.utils";
+
 let state;
 export const setStoreToValidators = (store) => {
-    store.subscribe(val => state = val);
+    store.subscribe(stores => state = getCurrentStore(stores.stores, stores.selectedStore));
 }
 
 export const validateAddRun = (distance) => {

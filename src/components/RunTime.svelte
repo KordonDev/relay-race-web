@@ -3,10 +3,10 @@
     export let runTime;
     export let runDistance;
 
-    import { updateRunTime } from '../services/stores';
+    import { setRunTime } from '../services/stores';
 
     function setTime() {
-        return (event) => updateRunTime(personName, runDistance, event.target.value);
+        return (event) => setRunTime(personName, runDistance, event.target.value);
     }
 </script>
 
