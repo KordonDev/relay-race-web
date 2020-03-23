@@ -1,5 +1,4 @@
 <script>
-    import SnapVertical from './atoms/SnapVertical.svelte';
     import { store, addPerson, addDistance, setTotalDistance, removeRun, removePerson } from '../services/stores';
     import { validateAddRun, validateAddPerson } from '../services/validators';
 
@@ -13,11 +12,11 @@
 
     function addNewPerson() {
         addPerson(newPersonName);
-        newPersonName = undefined;
+        newPersonName = '';
     }
     function addNewDistance() {
         addDistance(newDistance);
-        newDistance = undefined;
+        newDistance = '';
     }
     function submitTotalDistance() {
         setTotalDistance(totalDistance);
@@ -37,62 +36,71 @@
 </script>
 
 <style>
-	.relay-race-input {
-		background-image:linear-gradient(90deg, cornflowerblue 0%, wheat 50%);
-		border: black solid 4px;
-		min-width: 50vw;
-        min-height: 100vh;
-		scroll-snap-align: start;
-		scroll-snap-stop: always;
-	}
-
-    #totalDistance:invalid {
-        border: solid red 3px;
-    }
-
 </style>
 
-<SnapVertical>
-    <div class="relay-race-input">
+<div id="relay-race-input">
+    <h1>Perfect Relay Race</h1>
+    <p>
+        This website will help you to find the perfect split for a rely race. Therefore you have to execute the three steps.
+    </p>
+    <ol>
+        <li><a href="#relay-race-input">Describe your relay race</a></li>
+        <li><a href="#relay-race-times">Input the split times for each person</a></li>
+        <li><a href="#relay-race-result">Let the app calculate your splits for the perfect relay race</a></li>
+    </ol>
+    <div style="margin-top: 20px;">
+        <h2>Your Relay Race</h2>
+
         <div>
-            Personen:
+            <h3>Total Distance</h3>
+            <form on:submit|preventDefault={submitTotalDistance}>
+                <label for="totalDistance">Total distance in meter:</label>
+                <input type="number" id="totalDistance" bind:value={totalDistance} on:input={submitTotalDistance} min=1 required placeholder="in Meter" autocomplete="off" />
+            </form>
+        </div>
+
+        <div>
+            <h3>Runner</h3>
             <ul>
                 {#each persons as person}
-                    <li>{person.name} <button on:click|preventDefault={_removePerson(person)}>x</button></li>
+                    <li>
+                        {person.name}
+                        <button class="icon" title="Remove runner" on:click={_removePerson(person)}>
+                            <img style="width: 15px"src="./assets/user-minus.svg" alt="Remove runner">
+                        </button>
+                    </li>
                 {/each}
             </ul>
-
             <form on:submit|preventDefault={addNewPerson}>
-                <label for="name">Name:</label>
-                <input id="name" bind:value={newPersonName} placeholder="enter your name">
-                <button type="submit" disabled='{isDisabledAddPerson(newPersonName)}'>
-                    Person hinzufügen
+                <label for="name">Add Runner:</label>
+                <input id="name" bind:value={newPersonName} placeholder="Name" autocomplete="off" />
+                <button class="icon" type="submit" disabled='{isDisabledAddPerson(newPersonName)}'>
+                    <img style="width: 15px"src="./assets/user-plus.svg" alt="Add runner">
                 </button>
             </form>
         </div>
 
         <div>
-            <form on:submit|preventDefault={submitTotalDistance}>
-                <label for="totalDistance">Gesamtdistanz in Meter:</label>
-                <input id="totalDistance" type="number" bind:value={totalDistance} on:input={submitTotalDistance} min=0 placeholder="in Meter">
-            </form>
-        </div>
-
-        <div>
-            Distanzen:
+            <h3>Split distances</h3>
             <ul>
                 {#each persons[0].runs as run}
-                    <li>{run.distance} <button on:click|preventDefault={_removeRun(run)}>x</button></li>
+                    <li>{run.distance}
+                        <button class="icon" on:click={_removeRun(run)}>
+                            <img style="width: 15px"src="./assets/waypoint-minus.svg" alt="Remove distance">
+                        </button>
+                    </li>
                 {/each}
             </ul>
 
             <form on:submit|preventDefault={addNewDistance}>
-                <label for="distance">Distanz in Meter:</label>
-                <input id="distance" type="number" bind:value={newDistance} placeholder="in Meter">
-                <button type="submit" disabled='{isDisabledAddRunDistance(newDistance)}'>
-                    Distanz hinzufügen
+                <label for="distance">Add Distance:</label>
+                <input id="distance" type="number" bind:value={newDistance} placeholder="in Meter" min=1 autocomplete="off"/>
+                <button class="icon" type="submit" disabled='{isDisabledAddRunDistance(newDistance)}'>
+                    <img style="width: 15px"src="./assets/waypoint-plus.svg" alt="Add distance">
                 </button>
             </form>
         </div>
-    </div>
-</SnapVertical>
+   </div>
+
+
+</div>

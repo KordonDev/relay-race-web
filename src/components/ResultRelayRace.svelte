@@ -1,16 +1,15 @@
 <script>
-	import SnapVertical from './atoms/SnapVertical.svelte';
 	import { store } from '../services/stores';
 	import { runTimeErrors, totalDistanceError } from '../services/validators';
 
 	let data;
 	let errors;
 	let perfectRelayRace = {};
+	let calculating = false;
 	$: timeInMinutes = perfectRelayRace.time > 60 ? `${Math.floor(perfectRelayRace.time / 60)}:${perfectRelayRace.time % 60}` : `${perfectRelayRace.time}`
 
     store.subscribe(value => {
 		errors = runTimeErrors(value).concat(totalDistanceError(value));
-		console.log(errors);
 		data = value;
 	});
 	const worker = new Worker('/web-worker/worker.js');
@@ -18,9 +17,11 @@
 
 	worker.addEventListener('message', function(e) {
 		perfectRelayRace = e.data;
+		calculating = false;
 	}, false);
 
 	function sendDataToWorker() {
+		calculating = true;
 		const dataForServiceWorker = {
 			totalDistance: data.totalDistance,
 			persons: data.persons.map(person => ({
@@ -35,41 +36,107 @@
 	}
 </script>
 
-<style>
-	.relay-race-result {
-		background-image:linear-gradient(90deg, cornflowerblue 0%, wheat 50%);
-		border: black solid 4px;
-		min-width: 50vw;
-        min-height: 100vh;
-		scroll-snap-align: start;
-		scroll-snap-stop: always;
-	}
-</style>
-
-<SnapVertical>
-    <div class="relay-race-result">
-		<ul>
+<div id="relay-race-result">
+	<h2>Your Perfect Relay Race</h2>
+	{#if errors.length > 0}
+		<h3>Errors</h3>
+		Can't calculate the relay race because
+		<ul class="emoji-list">
 			{#each errors as error}
-				<li>{error}</li>
+				<li class="emoji-list-item emoji-error">{error}</li>
 			{/each}
 		</ul>
-        <button on:click|preventDefault={sendDataToWorker} disabled='{errors.length}'>Schnellster Staffellauf berechnen</button>
-		{#if perfectRelayRace.time}
-			<div>
-				<h3>
-					Bestes Ergebnis
-				</h3>
-				<p>
-					Möglich sind die {perfectRelayRace.distance} Meter in {perfectRelayRace.time} Sekunden ({timeInMinutes}).
-				</p>
+	{/if}
+	<button class="result" on:click|preventDefault={sendDataToWorker} disabled='{errors.length}'>Calculate fastest relay race</button>
+	{#if calculating}
+		<div class="calculating">
+			Calculating...
+			<div class="running-woman">🏃🏼‍♀️</div>
+		</div>
+	{/if}
+	{#if perfectRelayRace.time}
+		<div>
+			<h3>
+				Best Result
+			</h3>
+			<p>
+				The <b>{perfectRelayRace.distance}</b> meter of the relay race are possible in <b>{perfectRelayRace.time} seconds ({timeInMinutes})</b>.
+			</p>
 
-				Dafür ist die folgende Verteilung nötig:
-				<ul>
-					{#each perfectRelayRace.runs as run}
-						<li>{run.name} läuft {run.distance}m in {run.time}s</li>
-					{/each}
-				</ul>
-			</div>
-		{/if}
-    </div>
-</SnapVertical>
+			Therefore the relay race is done with the following splits:
+			<ul class="emoji-list">
+				{#each perfectRelayRace.runs as run}
+					<li class="emoji-list-item emoji-runner">{run.name} runs {run.distance} meter in {run.time} seconds</li>
+				{/each}
+			</ul>
+		</div>
+	{/if}
+</div>
+
+<style>
+
+.calculating {
+	position: relative;
+}
+
+.running-woman {
+	font-size: 50px;
+	animation: MoveLeftRight 3s ease-in-out infinite, Rotate 3s ease-in-out infinite;
+	position: absolute;
+	left: 0%;
+	top: 0;
+}
+
+@keyframes MoveLeftRight {
+	0%, 100% {
+		left: 0%;
+	}
+	50% {
+		left: 95%;
+	}
+}
+
+@keyframes Rotate {
+	0%, 45%, 100% {
+		transform: scaleX(-1);
+	}
+	50%, 95% {
+		transform: scaleX(1);
+	}
+}
+
+.result {
+	background-image: linear-gradient(45deg, #A0A0A0 25%, transparent 25%), linear-gradient(-45deg, #A0A0A0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #A0A0A0 75%), linear-gradient(-45deg, transparent 75%, #A0A0A0 75%);
+	background-size: 20px 20px;
+	background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+	padding: 20px;
+	font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    border: black solid 2px;
+    border-radius: 5px;
+    color: wheat;
+	text-shadow: 0 0 5px #000;
+	margin: 20px 0;
+}
+.result:disabled {
+	cursor: not-allowed;
+}
+
+.emoji-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.emoji-list-item {
+    padding-left: 1rem;
+    text-indent: -0.7rem;
+}
+.emoji-runner::before {
+    content: "🏃 ";
+}
+.emoji-error::before {
+    content: "❌ ";
+}
+</style>

@@ -2,11 +2,13 @@
 	import PersonRunTimes from './components/PersonRunTimes.svelte';
 	import PrepareRelayRace from './components/PrepareRelayRace.svelte';
 	import ResultRelayRace from './components/ResultRelayRace.svelte';
+	import Navigation from './components/Navigation.svelte';
 
 
     import SnapVertical from './components/atoms/SnapVertical.svelte';
-	import SnapHorizontal from './components/atoms/SnapHorizontal.svelte';
 	import SnapVerticalContainer from './components/atoms/SnapVerticalContainer.svelte';
+	import SnapHorizontal from './components/atoms/SnapHorizontal.svelte';
+	import SnapHorizontalContainer from './components/atoms/SnapHorizontalContainer.svelte';
 
 	import { store } from './services/stores';
 
@@ -17,20 +19,36 @@
 
 <main>
 	<SnapVerticalContainer paddingInPx="0">
-		<PrepareRelayRace />
-
 		<SnapVertical>
-			<SnapHorizontal>
-				{#each persons as person}
-					<div class="person">
-						<PersonRunTimes person={person} />
-					</div>
-				{/each}
-			</SnapHorizontal>
+			<SnapHorizontalContainer>
+				<SnapHorizontal width="100vw">
+					<PrepareRelayRace />
+				</SnapHorizontal>
+			</SnapHorizontalContainer>
 		</SnapVertical>
 
-		<ResultRelayRace />
+		<SnapVertical>
+			<div id="relay-race-times">
+				<SnapHorizontalContainer>
+					{#each persons as person}
+						<SnapHorizontal width="95vw" middleWidth="60vw" bigWidth="45vw">
+							<PersonRunTimes person={person} />
+						</SnapHorizontal>
+					{/each}
+				</SnapHorizontalContainer>
+			</div>
+		</SnapVertical>
+
+		<SnapVertical>
+			<SnapHorizontalContainer>
+				<SnapHorizontal width="100vw">
+					<ResultRelayRace />
+				</SnapHorizontal>
+			</SnapHorizontalContainer>
+		</SnapVertical>
 	</SnapVerticalContainer>
+
+	<Navigation/>
 </main>
 
 <style>

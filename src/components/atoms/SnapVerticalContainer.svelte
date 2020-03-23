@@ -1,5 +1,4 @@
 <script>
-	export let paddingInPx;
 </script>
 
 <style>
@@ -7,12 +6,9 @@
 		scroll-snap-type: y mandatory;
 		max-height: 100vh;
 		overflow-y: scroll;
-
-
-		padding: var(--paddingPx);
 	}
 </style>
 
-<div class="snap-vertical-container" style="--paddingPx:{paddingInPx}">
+<div class="snap-vertical-container">
     <slot />
 </div>

@@ -36,7 +36,6 @@ export const totalDistanceError = (_state) => {
     if (!state || !totalDistance) {
         return [ 'No total distance' ];
     }
-    console.log(totalDistance);
     if (totalDistance > 0) {
         return [];
     }
@@ -47,6 +46,12 @@ export const runTimeErrors = (_state) => {
     const errors = [];
     if (!_state) {
         return errors;
+    }
+    if (_state.persons.length === 0) {
+        errors.push('At least one person should run the relay race.');
+    }
+    if (_state.persons.length > 0 && _state.persons[0].runs.length === 0) {
+        errors.push('At least one split distance is needed');
     }
     _state.persons.map(person => {
         person.runs.map(run => {
