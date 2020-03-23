@@ -15,8 +15,8 @@
         document.querySelectorAll('.snap-vertical').forEach(element => verticalObserver.observe(element));
     });
 
-	const onVerticalIntersection = (entries) => {
-		for (const entry of entries) {
+    const onVerticalIntersection = (entries) => {
+        for (const entry of entries) {
             document.querySelectorAll('.snap-vertical').forEach((el, index, list) => {
                 if (Math.abs(el.offsetTop - entry.target.offsetTop) < 20) {
                     if (entry.isIntersecting) {
@@ -51,7 +51,7 @@
                     }
                 }
             });
-		}
+        }
     };
 
     const onHorizontalIntersection = (entries) => {
@@ -86,11 +86,11 @@
 </script>
 
 <style>
-	.navigation {
+    .navigation {
         position: fixed;
         bottom: 65px;
         right: 50px;
-	}
+    }
 
     .arrow {
         width: 20px;
