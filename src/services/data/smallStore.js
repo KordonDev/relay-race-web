@@ -1,5 +1,7 @@
 export const smallStore = {
+    name: 'example',
     totalDistance: 250,
+    runDistances: [50, 100],
     persons: [{
         name: 'Person A',
         runs: [{

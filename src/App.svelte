@@ -10,11 +10,12 @@
 	import SnapHorizontal from './components/atoms/SnapHorizontal.svelte';
 	import SnapHorizontalContainer from './components/atoms/SnapHorizontalContainer.svelte';
 
-	import { store } from './services/stores';
+	import { stores, setSelectedStore } from './services/stores';
+	import { getCurrentStore } from './services/store.utils';
 
 	let persons;
 
-	store.subscribe(value => persons = value.persons);
+	stores.subscribe(state => persons = getCurrentStore(state.stores, state.selectedStore, setSelectedStore).persons);
 </script>
 
 <main>
@@ -30,6 +31,11 @@
 		<SnapVertical>
 			<div id="relay-race-times">
 				<SnapHorizontalContainer>
+					{#if persons.length === 0}
+						<SnapHorizontal width="100vw">
+							<h2>❌ No runner registered so no times to track ❌</h2>
+						</SnapHorizontal>
+					{/if}
 					{#each persons as person}
 						<SnapHorizontal width="95vw" middleWidth="60vw" bigWidth="45vw">
 							<PersonRunTimes person={person} />

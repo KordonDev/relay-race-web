@@ -1,7 +1,5 @@
 <script>
     import { onMount } from 'svelte';
-    import { store, addPerson, addDistance, setTotalDistance, removeRun, removePerson } from '../services/stores';
-    import { validateAddRun, validateAddPerson } from '../services/validators';
 
     let top;
     let bottom;

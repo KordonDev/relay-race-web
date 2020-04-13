@@ -1,89 +1,67 @@
 import { writable } from "svelte/store";
 import { smallStore } from './data/smallStore';
-import { validateAddPersonRunTime, setStoreToValidators } from "./validators";
+import { setStoreToValidators } from "./validators";
+import { updateCurrentStore, syncStoreRunsToDistance, syncAllStoreRunsToDistance } from './store.utils'
+import { updateTotalDistance, updateAddPerson, updateAddDistance, updateRunTime, updateRemovePerson, updateRemoveRun } from './store.updates';
 
 // export const store = writable(JSON.parse(localStorage.getItem('store'))
-export const store = writable(smallStore);
-store.subscribe(val => localStorage.setItem("store", JSON.stringify(val)));
-setStoreToValidators(store);
+export const stores = writable({ selectedStore: 'example', stores: [ smallStore ] });
+stores.subscribe(val => localStorage.setItem("stores", JSON.stringify(val)));
+syncAllStoreRunsToDistance(stores);
 
-export const setTotalDistance = (_totalDistance) => {
-    store.update(state => {
-        return {
-            ...state,
-            totalDistance: _totalDistance,
-        };
-    });
+
+setStoreToValidators(stores);
+
+
+export const setTotalDistance = (totalDistance) => {
+    stores.update(state => updateCurrentStore(state, updateTotalDistance(totalDistance)));
 }
 
 export const addPerson = (name) => {
-    store.update(state => {
-        const newPerson = {
-            name,
-            runs: state.persons[0].runs.map(run => ({ distance: run.distance, time: undefined})),
-        };
-        return {
-            ...state,
-            persons: [ ...state.persons, newPerson ],
-        };
-    });
+    stores.update(state => updateCurrentStore(state, updateAddPerson(name)));
 }
 
 export const addDistance = (distance) => {
-    store.update(state => {
-        return {
-            ...state,
-            persons: state.persons.map(person => {
-                const allRuns = [ ...person.runs ];
-                allRuns.push({ distance, time: undefined });
-
-                return {
-                    name: person.name,
-                    runs: allRuns.sort((a, b) => a.distance - b.distance),
-                };
-            })
-        };
-    })
+    stores.update(state => updateCurrentStore(state, updateAddDistance(distance)));
+    stores.update(state => updateCurrentStore(state, syncStoreRunsToDistance));
 }
 
-export const updateRunTime = (personName, distance, time) => {
-    store.update(state => {
-        return {
-            ...state,
-            persons: state.persons.map(person => {
-                if (person.name !== personName) {
-                    return person;
-                }
-                return {
-                    ...person,
-                    runs: person.runs.map(run => {
-                        if (run.distance !== distance) {
-                            return run;
-                        }
-                        return {
-                            ...run,
-                            time,
-                        }
-                    })
-                }
-            }),
-        }
-    })
+export const setRunTime = (personName, distance, time) => {
+    stores.update(state => updateCurrentStore(state, updateRunTime(personName, distance, time)));
 }
 
 export const removePerson = (personName) => {
-    store.update(state => ({
+    stores.update(state => updateCurrentStore(state, updateRemovePerson(personName)));
+}
+
+export const removeRun = (distanceToRemove) => {
+    stores.update(state => updateCurrentStore(state, updateRemoveRun(distanceToRemove)));
+    stores.update(state => updateCurrentStore(state, syncStoreRunsToDistance));
+}
+
+export const setSelectedStore = (storeName) => {
+    stores.update(state => ({
         ...state,
-        persons: state.persons.filter(person => person.name !== personName),
+        selectedStore: storeName,
     }));
 }
 
-export const removeRun = (distance) => {
-    store.update(state => ({
+export const addRelayRace = (storeName) => {
+    const newStore = {
+        name: storeName,
+        totalDistance: 0,
+        runDistances: [],
+        persons: [],
+    };
+    stores.update(state => ({
         ...state,
-        persons: state.persons.map(person => ({
-            ...person,
-            runs: person.runs.filter(run => run.distance !== distance),
-        }))
-    }));
+        stores: [ ...state.stores, newStore ],
+    }))
+}
+
+export const removeRelayRace = (storeName) => {
+    stores.update(state => ({
+        ...state,
+        stores: state.stores.filter(store => store.name !== storeName),
+    }))
 }

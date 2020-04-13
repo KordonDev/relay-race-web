@@ -1,5 +1,6 @@
 export const largeStore = {
     totalDistance: 150,
+    runDistances: [50, 100, 150, 200],
     persons: [{
         name: 'Person A',
         runs: [{

@@ -1,5 +1,6 @@
 <script>
-	import { store } from '../services/stores';
+	import { stores, setSelectedStore } from '../services/stores';
+	import { getCurrentStore } from '../services/store.utils';
 	import { runTimeErrors, totalDistanceError } from '../services/validators';
 
 	let data;
@@ -8,9 +9,10 @@
 	let calculating = false;
 	$: timeInMinutes = perfectRelayRace.time > 60 ? `${Math.floor(perfectRelayRace.time / 60)}:${perfectRelayRace.time % 60}` : `${perfectRelayRace.time}`
 
-    store.subscribe(value => {
-		errors = runTimeErrors(value).concat(totalDistanceError(value));
-		data = value;
+    stores.subscribe(state => {
+		const currentStore = getCurrentStore(state.stores, state.selectedStore, setSelectedStore);
+		errors = runTimeErrors(currentStore).concat(totalDistanceError(currentStore));
+		data = currentStore;
 	});
 	const worker = new Worker('/web-worker/worker.js');
 
