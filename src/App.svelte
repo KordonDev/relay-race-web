@@ -19,7 +19,7 @@
 </script>
 
 <main>
-	<SnapVerticalContainer paddingInPx="0">
+	<SnapVerticalContainer>
 		<SnapVertical>
 			<SnapHorizontalContainer>
 				<SnapHorizontal width="100vw">
