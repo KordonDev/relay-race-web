@@ -4,9 +4,10 @@ import { setStoreToValidators } from "./validators";
 import { updateCurrentStore, syncStoreRunsToDistance, syncAllStoreRunsToDistance } from './store.utils'
 import { updateTotalDistance, updateAddPerson, updateAddDistance, updateRunTime, updateRemovePerson, updateRemoveRun } from './store.updates';
 
-// export const store = writable(JSON.parse(localStorage.getItem('store'))
-export const stores = writable({ selectedStore: 'example', stores: [ smallStore ] });
-stores.subscribe(val => localStorage.setItem("stores", JSON.stringify(val)));
+const storageKey = 'stores';
+const defaultStore = { selectedStore: 'example', stores: [ smallStore ] };
+export const stores = writable(JSON.parse(localStorage.getItem(storageKey)) || defaultStore);
+stores.subscribe(val => localStorage.setItem(storageKey, JSON.stringify(val)));
 syncAllStoreRunsToDistance(stores);
 
 
